@@ -5,7 +5,7 @@ import { Layout } from './components/Layout';
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from './pages/Home';
-import { Accounts } from './pages/Accounts';
+import { Accounts } from './pages/Accounts/Accounts';
 import { Budgets } from './pages/Budgets';
 import { Transactions } from './pages/Transactions';
 import { Debts } from './pages/Debts';
@@ -22,11 +22,11 @@ function App() {
          <div style={{background: '#0000ff', justify: 'flex-begin'}}>help</div> */}
          <Routes>
           <Route path='/' element={ <Home /> }/>
-          <Route path='/transactions' element={ <Transactions /> }/>
-          <Route path='/accounts' element={ <Accounts /> }/>
-          <Route path='/budgets' element={ <Budgets /> }/>
-          <Route path='/debts' element={ <Debts /> }/>
-          <Route path='/calendar' element={ <Calendar /> }/>
+          <Route path='/transactions' element={ <Transactions openSidebar={true}/> }/>
+          <Route path='/accounts' element={ <Accounts openSidebar={true}/> }/>
+          <Route path='/budgets' element={ <Budgets openSidebar={true}/> }/>
+          <Route path='/debts' element={ <Debts openSidebar={true}/> }/>
+          <Route path='/calendar' element={ <Calendar openSidebar={true}/> }/>
          </Routes>
 
     </div>

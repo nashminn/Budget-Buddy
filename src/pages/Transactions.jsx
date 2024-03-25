@@ -1,10 +1,10 @@
 import React from 'react'
 import { Layout } from '../components/Layout'
 
-export const Transactions = () => {
+export const Transactions = ( {openSidebar} ) => {
 
   return (
-    <Layout title="Transactions">
+    <Layout title="Transactions" openSidebar={openSidebar}>
       Transactions
     </Layout>
   )

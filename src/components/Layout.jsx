@@ -1,8 +1,8 @@
 import React from 'react';
 import { Dashboard } from './Dashboard';
 
-export const Layout = ({ title, children }) => {
-  const [open, setOpen] = React.useState(false);
+export const Layout = ({ title, children, openSidebar }) => {
+  const [open, setOpen] = React.useState(openSidebar===undefined?false:true);
 
   return (
     <div>

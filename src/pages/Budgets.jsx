@@ -1,8 +1,8 @@
 import React from 'react'
 import { Layout } from '../components/Layout'
 
-export const Budgets = () => {
+export const Budgets = ( {openSidebar} ) => {
   return (
-    <Layout title="Budgets">Budgets</Layout>
+    <Layout title="Budgets" openSidebar={openSidebar}>Budgets</Layout>
   )
 }

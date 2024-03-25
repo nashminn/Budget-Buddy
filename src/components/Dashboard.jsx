@@ -26,6 +26,7 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import PieChartIcon from '@mui/icons-material/PieChart';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -57,14 +58,15 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export const Dashboard = ({ title, open, setOpen }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const DashboardList = [ 
-                          ['Overview', <DashboardIcon />], 
-                          ['Transactions', <ReceiptIcon />],
-                          ['Accounts', <AccountBalanceIcon />], 
-                          ['Budgets', <PieChartIcon />], 
-                          ['Debts', <TimerOutlinedIcon />], 
-                          ['Calendar', <CalendarTodayIcon />]
+                          ['Overview', <DashboardIcon />, '/'], 
+                          ['Transactions', <ReceiptIcon />, '/transactions'],
+                          ['Accounts', <AccountBalanceIcon />, '/accounts'], 
+                          ['Budgets', <PieChartIcon />, '/budgets'], 
+                          ['Debts', <TimerOutlinedIcon />, '/debts'], 
+                          ['Calendar', <CalendarTodayIcon />, '/calendar']
                         ]
 
   const handleDrawerOpen = () => {
@@ -116,14 +118,18 @@ export const Dashboard = ({ title, open, setOpen }) => {
         <List>
           {
             DashboardList.map((menuItem, index) => (
-              <ListItem key={menuItem[0]} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    { menuItem[1] }
-                  </ListItemIcon>
-                  <ListItemText primary={menuItem[0]} />
-                </ListItemButton>
-              </ListItem>
+              
+                <ListItem key={index} disablePadding>
+                
+                  <ListItemButton onClick={()=>navigate(menuItem[2])}>
+                    <ListItemIcon>
+                      { menuItem[1] }
+                    </ListItemIcon>
+                    <ListItemText primary={menuItem[0]} />
+                  </ListItemButton>
+                
+                </ListItem>
+
             ))
           }
         </List>
