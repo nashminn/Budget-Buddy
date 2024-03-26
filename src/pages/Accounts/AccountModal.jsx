@@ -29,7 +29,6 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
   }
 
   return (
-    <div>
         <Modal open={showForm} onClose={() => { 
             // console.log("ON HIDE TRIGGERED"); 
             setShowForm(false) 
@@ -56,6 +55,25 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
             <div style={{ marginBottom: '1rem' }}>
               <Typography variant="body1" component="label" htmlFor="acc_name">Account Name</Typography>
               <TextField id="acc_name" name="acc_name" value={name} onChange={(e) => setName(e.target.value)} fullWidth />
+
+              {/* <TextField
+      label="Type something..."
+      value={inputValue}
+      onChange={handleInputChange}
+      variant="outlined"
+      InputProps={{
+        list: 'suggestions',
+      }}
+      fullWidth
+      autoComplete="off"
+    >
+      <datalist id="suggestions">
+        {sampleList.map((item, index) => (
+          <option key={index} value={item} />
+        ))}
+      </datalist>
+    </TextField> */}
+
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
@@ -77,6 +95,5 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
 
         </Box>
         </Modal>
-    </div>
   )
 }

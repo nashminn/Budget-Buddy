@@ -1,8 +1,9 @@
 import { Card, CardContent, IconButton, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import React from 'react'
+import DeleteDialog from '../../components/DeleteDialog'
 
-export const AccountCard = ({account}) => {
+export const AccountCard = ({account, deleteAccount}) => {
     const balanceColor = account.balance >= 0 ? 'green' : 'red';
     
   return (
@@ -14,11 +15,8 @@ export const AccountCard = ({account}) => {
             <Typography variant="body1" style={{ color: balanceColor }}>
                 Balance: {account.balance}
             </Typography>
-            <IconButton aria-label="delete" onClick={()=>{
-                alert('delete not implemented yet')
-            }}>
-                <DeleteIcon />
-            </IconButton>
+            
+            <DeleteDialog deleteHandle={deleteAccount} id={account.id} promptTitle={"Delete account?"} prompt={"Are you sure you want to delete this account?"}/>
         </CardContent>
     </Card>
   )
