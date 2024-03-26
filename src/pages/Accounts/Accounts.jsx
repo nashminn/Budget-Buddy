@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Layout } from '../../components/Layout'
-import { Box, Fab, List, ListItem } from '@mui/material'
+import { Box, Fab, List, ListItem, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { AccountModal } from './AccountModal'
 import { AccountCard } from './AccountCard'
@@ -28,7 +28,15 @@ export const Accounts = ( {openSidebar} ) => {
 
   return (
     <Layout title="Accounts" openSidebar={openSidebar}>
+      
       <Box>
+
+      <Box sx={{marginTop: 5}}>
+        <Typography>
+          {accounts.length !== 0 ? "Total amount " + accounts.reduce((acc, curr) => acc + curr.balance, 0) : 0}
+        </Typography>
+      </Box>
+
       {accounts.length !== 0 ? (
           <List>
             {accounts.map((acc, index) => (
