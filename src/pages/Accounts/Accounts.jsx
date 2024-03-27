@@ -29,11 +29,11 @@ export const Accounts = ( {openSidebar} ) => {
   return (
     <Layout title="Accounts" openSidebar={openSidebar}>
       
-      <Box>
+      <Box sx={{marginLeft: 20, marginRight: 20}}>
 
-      <Box sx={{marginTop: 5}}>
+      <Box sx={{marginTop: 10}}>
         <Typography>
-          {accounts.length !== 0 ? "Total amount " + accounts.reduce((acc, curr) => acc + curr.balance, 0) : 0}
+          {accounts.length !== 0 ? "Total amount : " + accounts.reduce((acc, curr) => acc + Number(curr.balance), 0) + ' BDT' : '' }
         </Typography>
       </Box>
 

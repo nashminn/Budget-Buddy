@@ -12,6 +12,9 @@ export const AccountCard = ({account, deleteAccount}) => {
             <Typography variant="h5" component="h2">
                 {account.name}
             </Typography>
+            <Typography variant="body1">
+                {account.tag}
+            </Typography>
             <Typography variant="body1" style={{ color: balanceColor }}>
                 Balance: {account.balance}
             </Typography>

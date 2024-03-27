@@ -1,11 +1,14 @@
-import { Box, Button, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, Menu, MenuItem, Modal, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { v4 as uid } from 'uuid';
+import { banks } from '../../data/banks';
 
 export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
-  const [name, setName] = useState('Account name')
+  const [name, setName] = useState('')
   const [initialAmount, setInitAmount] = useState(0)
   const [notes, setNotes] = useState('')
+  const [tag, setTag] = useState('')
+  const [bankList, setBanks] = useState(banks())
 
   const clearData = ()=>{
     setName('Account name')
@@ -19,6 +22,7 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
       created: new Date(),
       name: name,
       initialAmount: initialAmount,
+      tag: tag, 
       notes: notes,
       balance: initialAmount,
     }
@@ -41,7 +45,7 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
                   transform: 'translate(-50%, -50%)',
                   width: 400,
                   bgcolor: 'background.paper',
-                  border: '2px solid #000',
+                  border: '2px solid #B2BEB5',
                   boxShadow: 24,
                   p: 4,
                 }}>
@@ -52,33 +56,37 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
           </Typography>
 
           <form>
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{ marginBottom: '1rem' , marginTop: '1rem' }}>
               <Typography variant="body1" component="label" htmlFor="acc_name">Account Name</Typography>
-              <TextField id="acc_name" name="acc_name" value={name} onChange={(e) => setName(e.target.value)} fullWidth />
+              {/* <TextField id="acc_name" name="acc_name" value={name} onChange={(e) => setName(e.target.value)} fullWidth /> */}
 
-              {/* <TextField
-      label="Type something..."
-      value={inputValue}
-      onChange={handleInputChange}
-      variant="outlined"
-      InputProps={{
-        list: 'suggestions',
-      }}
-      fullWidth
-      autoComplete="off"
-    >
-      <datalist id="suggestions">
-        {sampleList.map((item, index) => (
-          <option key={index} value={item} />
-        ))}
-      </datalist>
-    </TextField> */}
+              <TextField
+                select
+                id='acc_name'
+                name="acc_name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                variant="outlined"
+                fullWidth
+                autoComplete="off"
+              >
+                {/* <datalist id="suggestions"> */}
+                  {bankList.map((item, index) => (
+                    <MenuItem key={index} value={item}> {item} </MenuItem>
+                  ))}
+                {/* </datalist> */}
+              </TextField>
 
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
-              <Typography variant="body1" component="label" htmlFor="initAmount">Initial Amount</Typography>
+              <Typography variant="body1" component="label" htmlFor="initAmount">Initial Amount (BDT)</Typography>
               <TextField type="number" id="initAmount" name="initAmount" value={initialAmount} onChange={(e) => setInitAmount(e.target.value)} fullWidth />
+            </div>
+
+            <div style={{ marginBottom: '1rem' }}>
+              <Typography variant="body1" component="label" htmlFor="tag">Tag Name</Typography>
+              <TextField type="text" id="tag" name="tag" value={tag} onChange={(e) => setTag(e.target.value)} fullWidth />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
