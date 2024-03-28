@@ -1,0 +1,15 @@
+.cancel-button-custom,
+.save-button-custom {
+    border: 1px solid #807b7b; /* Add border to both buttons */
+    padding: 8px 16px; /* Add padding to both buttons */
+    background-color: transparent; /* Transparent background for both buttons */
+    margin: 1px;
+}
+
+.cancel-button-custom {
+    color: #666; /* Greyish color for Cancel button text */
+}
+
+.save-button-custom {
+    /* Add specific styles for Save button if needed */
+}

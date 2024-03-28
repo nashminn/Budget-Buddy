@@ -20,7 +20,7 @@ export const Transactions = ( {openSidebar} ) => {
         </Grid>
       </Grid>
 
-      <TransactionModal openModal={openModal} setOpenModal={setOpenModal} modalType={modalType}/>
+      <TransactionModal openModal={openModal} setOpenModal={setOpenModal} modalType={modalType} openSidebar={openSidebar}/>
 
       <Fab style={{ position: 'fixed', bottom: 100, right: 20, backgroundColor: '	#90EE90' }}
                   onClick={()=>{setOpenModal(true); setModalType(1)}} ><Add /></Fab>

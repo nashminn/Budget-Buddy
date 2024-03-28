@@ -14,9 +14,15 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
     setName('Account name')
     setInitAmount(0)
     setNotes('')
+    setTag('')
   }
 
-  const onSave = () => {
+  const onSave = (e) => {
+    if (tag.trim() === '' || name.trim() === '') {
+      alert('Account name and tag fields cannot be empty!');
+      return; // Exit the function without submitting the form
+    }
+
     const accountToAdd = {
       id: uid(),
       created: new Date(),
@@ -58,35 +64,38 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
           <form>
             <div style={{ marginBottom: '1rem' , marginTop: '1rem' }}>
               <Typography variant="body1" component="label" htmlFor="acc_name">Account Name</Typography>
-              {/* <TextField id="acc_name" name="acc_name" value={name} onChange={(e) => setName(e.target.value)} fullWidth /> */}
-
-              <TextField
+              
+              <TextField required
                 select
                 id='acc_name'
                 name="acc_name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value)
+                }}
                 variant="outlined"
                 fullWidth
                 autoComplete="off"
               >
-                {/* <datalist id="suggestions"> */}
                   {bankList.map((item, index) => (
                     <MenuItem key={index} value={item}> {item} </MenuItem>
                   ))}
-                {/* </datalist> */}
               </TextField>
 
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
               <Typography variant="body1" component="label" htmlFor="initAmount">Initial Amount (BDT)</Typography>
-              <TextField type="number" id="initAmount" name="initAmount" value={initialAmount} onChange={(e) => setInitAmount(e.target.value)} fullWidth />
+              <TextField type="number" id="initAmount" name="initAmount" 
+                          value={initialAmount} onChange={(e) => setInitAmount(e.target.value)} 
+                          fullWidth/>
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
               <Typography variant="body1" component="label" htmlFor="tag">Tag Name</Typography>
-              <TextField type="text" id="tag" name="tag" value={tag} onChange={(e) => setTag(e.target.value)} fullWidth />
+              <TextField required type="text" id="tag" name="tag" value={tag} 
+                          onChange={(e) => setTag(e.target.value.replace(' ', '-'))} fullWidth 
+                          placeholder="Handy keyword for search" />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>

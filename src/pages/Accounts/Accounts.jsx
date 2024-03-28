@@ -1,15 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout } from '../../components/Layout'
 import { Box, Fab, List, ListItem, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { AccountModal } from './AccountModal'
 import { AccountCard } from './AccountCard'
+import { getAccountList } from '../../API/services'
+import { useLocation } from 'react-router-dom'
 
 
 export const Accounts = ( {openSidebar} ) => {
-  const [accounts, setAccounts] = useState( localStorage.getItem('accounts')===null?[]: JSON.parse( localStorage.getItem('accounts') ))
+  const location = useLocation()
+  const [accounts, setAccounts] = useState( getAccountList() )
   const [showForm, setShowForm] = useState(false)
 
+  useEffect(()=>{
+    if(location.state !== null) {
+      openSidebar = location.state.openSidebar
+      setShowForm(location.state.showAccForm)
+    }
+  }, [])
+  
 
   const addAccount = (accountToAdd) => {
     const newAccounts = [accountToAdd, ...accounts]
