@@ -1,20 +1,22 @@
 import { Alert, Box, Button, Menu, MenuItem, Modal, Stack, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { income } from '../../data/categories'
-import { getAccountList } from '../../API/services'
+import { expenses, income } from '../../data/categories'
+import { addNewTransaction, getAccountList } from '../../API/services'
 import { useNavigate } from 'react-router-dom'
 
 import '../../css/Common.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { v4 as uid } from 'uuid';
+
 
 export const TransactionModal = ({openModal, setOpenModal, modalType, 
                                     openSidebar, resetCounter, setResetCounter}) => {
     const [category, setCategory] = useState('')
     const [amount, setAmount] = useState(0)
-    const [account, setAccount] = useState('')
-    const [timestamp, setTimestamp] = useState('')
+    const [accountTag, setAccountTag] = useState('')
+    
     const [notes, setNotes] = useState('')
     const [accountList, setAccountList] = useState( getAccountList() )
     const [date, setDate] = useState(new Date());
@@ -28,7 +30,8 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
         if(openModal) {
             
         }
-    }, [openModal])
+    }, [openModal]);
+
 
     const redirectToAddAnotherAccount = ()=>{
         navigate('/accounts', {
@@ -41,29 +44,45 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
 
     const onCancel = ()=>{
         setOpenModal(false)
-        setAccount('')
+        setAccountTag('')
         setCategory('')
         setAmount(0)
         setNotes('')
         setDate(new Date())
     }
 
-    const IncomeModalBody = ()=> {
-        const incomeCategoryList = income();
-
+    const ModalBody = (title, categoryList)=> {
 
         // category, wallet, amount, timestamp, type
         const onSave = ()=>{
-            if(account.trim().length === 0 || category.trim().length === 0 ) {
+            if(accountTag.trim().length === 0 || category.trim().length === 0 ) {
                 setAlertMessage("Account and category cannot be empty!")
                 setEmptyFieldAlert(true)
                 return;
             }
-            const newTransaction = {
-                account: account,
-                category: category,
+            if(amount === 0) {
+                setAlertMessage("What's the point in adding a transaction if the amount is zero!")
+                setEmptyFieldAlert(true)
+                return;
             }
             
+            let type
+            if(title.includes('Income')) type = 1;
+            else type = -1
+            const newTransaction = {
+                id: uid(),
+                created: (new Date()).toISOString(),
+                type: type,
+                tag: accountTag,
+                category: category,
+                amount: amount,
+                date: date.toISOString(),
+                notes: notes
+            }
+            addNewTransaction(newTransaction);
+            setOpenModal(false)
+            onCancel()
+            setResetCounter(resetCounter + 1)
         }
 
         return (
@@ -80,7 +99,7 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
         }}>
             
             <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add Income
+            {title}
             </Typography>
             
             <form>
@@ -91,15 +110,15 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
                     select
                     id='account'
                     name="account"
-                    value={account}
-                    onChange={(e) => { setAccount(e.target.value); setEmptyFieldAlert(false)}}
+                    value={accountTag}
+                    onChange={(e) => { setAccountTag(e.target.value); setEmptyFieldAlert(false)}}
                     variant="outlined"
                     fullWidth
                     autoComplete="off"
                     >
 
                         {accountList.map((item, index) => (
-                        <MenuItem key={index} value={item.name}> {item.name + ' (' + item.tag + ')'}  </MenuItem>
+                        <MenuItem key={index} value={item.tag}> {item.name + ' (' + item.tag + ')'}  </MenuItem>
                         ))}
                         <MenuItem key="another" value={"Add another"} onClick={redirectToAddAnotherAccount}>Add another account</MenuItem>
                     </TextField>
@@ -113,7 +132,7 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
                             <TextField select type="text" id="category" name="category" 
                                 value={category} onChange={(e) => {setCategory(e.target.value); setEmptyFieldAlert(false) }} fullWidth > 
 
-                                {incomeCategoryList.map((item, index)=>(
+                                {categoryList.map((item, index)=>(
                                     <MenuItem key={index} value={item}>{item}</MenuItem>
                                 ))}
 
@@ -150,16 +169,15 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
                 <Button variant='contained' onClick={onSave}>Save</Button>
             </div>
             {emptyFieldAlert && (
-                <Stack>
-                    <Alert severity='warning'>{alertMessage}</Alert>
-                </Stack>
+                <Alert severity='warning' style={{marginTop: 5}}>{alertMessage}</Alert>
             )}
         </Box>)
     }
 
+
   return (
     <Modal open={openModal} onClose={()=>{ setOpenModal(false); onCancel(); }}>
-        {IncomeModalBody()}
+        {modalType===1?(ModalBody("Add Income", income())):ModalBody("Add Expense", expenses())}
         
     </Modal>
   )

@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete'
 
-export default function DeleteDialog({ deleteHandle, id, promptTitle, prompt}) {
+export default function DeleteDialog({ deleteHandle, id, promptTitle, prompt, ...props}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -22,14 +22,19 @@ export default function DeleteDialog({ deleteHandle, id, promptTitle, prompt}) {
   const handleDelete = ()=>{
     deleteHandle(id)
     handleClose()
+    
+    if(props.resetCounter !== undefined) {
+      props.setResetCounter(props.resetCounter + 1)
+    }
   }
 
   return (
     <React.Fragment>
-      <IconButton variant="outlined" onClick={handleClickOpen}>
-
+      {props.showIcon&&(<IconButton variant="outlined" onClick={handleClickOpen}>
         <DeleteIcon />
-      </IconButton>
+      </IconButton>)}
+      {!props.showIcon&&(<div onClick={handleClickOpen}>{props.children}</div>)}
+      
       <Dialog
         open={open}
         onClose={handleClose}

@@ -14,6 +14,7 @@ export const Accounts = ( {openSidebar} ) => {
   const [showForm, setShowForm] = useState(false)
   const [snackOpen, setSnackOpen] = useState(false)
   const [showSnack, setShowSnack] = useState(false)
+  const [resetCounter, setResetCounter] = useState(0)
 
   useEffect(()=>{
     if(showSnack) {
@@ -21,6 +22,10 @@ export const Accounts = ( {openSidebar} ) => {
       setShowSnack(false)
     }
   }, [showSnack])
+
+  useEffect(()=>{
+    setAccounts(getAccountList())
+  }, [resetCounter])
 
   useEffect(()=>{
     if(location.state !== null) {
@@ -53,13 +58,6 @@ export const Accounts = ( {openSidebar} ) => {
     }
   }
 
-  const deleteAccount = (accountToDeleteId) => {
-    const filteredAcc = accounts.filter((x) => {
-      return x.id !== accountToDeleteId
-    })
-    setAccounts(filteredAcc)
-    localStorage.setItem('accounts', JSON.stringify(filteredAcc))
-  }
 
 
   return (
@@ -77,7 +75,7 @@ export const Accounts = ( {openSidebar} ) => {
           <List>
             {accounts.map((acc, index) => (
               <ListItem key={index}> 
-                <AccountCard account={acc} deleteAccount={deleteAccount}/> 
+                <AccountCard account={acc} resetCounter={resetCounter} setResetCounter={setResetCounter}/> 
               </ListItem>
             ))}
           </List>
@@ -95,7 +93,7 @@ export const Accounts = ( {openSidebar} ) => {
         
       </Box>
 
-      <AccountModal showForm={showForm} setShowForm={setShowForm} addAccount={addAccount} deleteAccount={deleteAccount}/>
+      <AccountModal showForm={showForm} setShowForm={setShowForm} addAccount={addAccount} />
 
       <Fab style={{ position: 'fixed', bottom: 20, right: 20 }} onClick={()=>setShowForm(true)} > 
         <AddIcon />
