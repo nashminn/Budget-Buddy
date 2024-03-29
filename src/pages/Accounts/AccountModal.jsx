@@ -1,5 +1,5 @@
-import { Box, Button, Menu, MenuItem, Modal, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Alert, Box, Button, Menu, MenuItem, Modal, Snackbar, Stack, TextField, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import { v4 as uid } from 'uuid';
 import { banks } from '../../data/banks';
 
@@ -9,6 +9,8 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
   const [notes, setNotes] = useState('')
   const [tag, setTag] = useState('')
   const [bankList, setBanks] = useState(banks())
+  const [emptyFieldAlert, setEmptyFieldAlert] = useState(false)
+  const [alertMessage, setAlertMessage] = useState(false)
 
   const clearData = ()=>{
     setName('Account name')
@@ -19,7 +21,8 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
 
   const onSave = (e) => {
     if (tag.trim() === '' || name.trim() === '') {
-      alert('Account name and tag fields cannot be empty!');
+      setAlertMessage("Account name and tag cannot be empty!")
+      setEmptyFieldAlert(true)
       return; // Exit the function without submitting the form
     }
 
@@ -33,12 +36,19 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
       balance: initialAmount,
     }
 
-    addAccount(accountToAdd)
-    clearData()
-    setShowForm(false)
+    const message = addAccount(accountToAdd)
+    if(message.success) {
+      clearData()
+      setShowForm(false)
+    } else {
+      setAlertMessage("Tag must be unique!")
+      setEmptyFieldAlert(true)
+    }
+    
   }
 
   return (
+    
         <Modal open={showForm} onClose={() => { 
             // console.log("ON HIDE TRIGGERED"); 
             setShowForm(false) 
@@ -71,6 +81,7 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
                 name="acc_name"
                 value={name}
                 onChange={(e) => {
+                  setEmptyFieldAlert(false)
                   setName(e.target.value)
                 }}
                 variant="outlined"
@@ -87,20 +98,20 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
             <div style={{ marginBottom: '1rem' }}>
               <Typography variant="body1" component="label" htmlFor="initAmount">Initial Amount (BDT)</Typography>
               <TextField type="number" id="initAmount" name="initAmount" 
-                          value={initialAmount} onChange={(e) => setInitAmount(e.target.value)} 
+                          value={initialAmount} onChange={(e) => {setEmptyFieldAlert(false); setInitAmount(e.target.value)} } 
                           fullWidth/>
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
               <Typography variant="body1" component="label" htmlFor="tag">Tag Name</Typography>
               <TextField required type="text" id="tag" name="tag" value={tag} 
-                          onChange={(e) => setTag(e.target.value.replace(' ', '-'))} fullWidth 
+                          onChange={(e) => { setTag(e.target.value.replace(' ', '-')); setEmptyFieldAlert(false); } } fullWidth 
                           placeholder="Handy keyword for search" />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
               <Typography variant="body1" component="label" htmlFor="notes">Notes</Typography>
-              <TextField id="notes" name="notes" multiline rows={5} value={notes} onChange={(e) => setNotes(e.target.value)} fullWidth />
+              <TextField id="notes" name="notes" multiline rows={5} value={notes} onChange={(e) => { setEmptyFieldAlert(false); setNotes(e.target.value) }} fullWidth />
             </div>
           </form>
 
@@ -110,7 +121,14 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
             <Button variant="contained" onClick={onSave} style={{ marginLeft: '0.5rem' }}>Save</Button>
           </Box>
 
+          {emptyFieldAlert && (
+            <Stack>
+              <Alert severity='warning'>{alertMessage}</Alert>
+            </Stack>
+          )}
+
         </Box>
+        
         </Modal>
   )
 }

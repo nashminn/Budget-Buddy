@@ -8,7 +8,7 @@ export const AppBarComponent = ({openDrawer, toggleDrawer, title}) => {
     <AppBar position='static'>
       <Toolbar>
       <IconButton onClick={()=>{
-        console.log("clicked menu icon "+ openDrawer)
+        // console.log("clicked menu icon "+ openDrawer)
         toggleDrawer(!openDrawer)
       }}>
         <Menu />

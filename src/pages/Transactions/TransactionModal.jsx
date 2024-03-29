@@ -1,4 +1,4 @@
-import { Box, Button, Menu, MenuItem, Modal, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, Menu, MenuItem, Modal, Stack, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { income } from '../../data/categories'
 import { getAccountList } from '../../API/services'
@@ -6,10 +6,11 @@ import { useNavigate } from 'react-router-dom'
 
 import '../../css/Common.css';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
-
-export const TransactionModal = ({openModal, setOpenModal, modalType, openSidebar}) => {
+export const TransactionModal = ({openModal, setOpenModal, modalType, 
+                                    openSidebar, resetCounter, setResetCounter}) => {
     const [category, setCategory] = useState('')
     const [amount, setAmount] = useState(0)
     const [account, setAccount] = useState('')
@@ -17,7 +18,11 @@ export const TransactionModal = ({openModal, setOpenModal, modalType, openSideba
     const [notes, setNotes] = useState('')
     const [accountList, setAccountList] = useState( getAccountList() )
     const [date, setDate] = useState(new Date());
+    
+    const [emptyFieldAlert, setEmptyFieldAlert] = useState(false)
+    const [alertMessage, setAlertMessage] = useState('');
     const navigate = useNavigate()
+
 
     useEffect(()=> {
         if(openModal) {
@@ -34,8 +39,32 @@ export const TransactionModal = ({openModal, setOpenModal, modalType, openSideba
         })
     }
 
+    const onCancel = ()=>{
+        setOpenModal(false)
+        setAccount('')
+        setCategory('')
+        setAmount(0)
+        setNotes('')
+        setDate(new Date())
+    }
+
     const IncomeModalBody = ()=> {
         const incomeCategoryList = income();
+
+
+        // category, wallet, amount, timestamp, type
+        const onSave = ()=>{
+            if(account.trim().length === 0 || category.trim().length === 0 ) {
+                setAlertMessage("Account and category cannot be empty!")
+                setEmptyFieldAlert(true)
+                return;
+            }
+            const newTransaction = {
+                account: account,
+                category: category,
+            }
+            
+        }
 
         return (
         <Box sx={{
@@ -63,7 +92,7 @@ export const TransactionModal = ({openModal, setOpenModal, modalType, openSideba
                     id='account'
                     name="account"
                     value={account}
-                    onChange={(e) => setAccount(e.target.value)}
+                    onChange={(e) => { setAccount(e.target.value); setEmptyFieldAlert(false)}}
                     variant="outlined"
                     fullWidth
                     autoComplete="off"
@@ -82,7 +111,7 @@ export const TransactionModal = ({openModal, setOpenModal, modalType, openSideba
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="body1" component="label" htmlFor="Category">Category</Typography>
                             <TextField select type="text" id="category" name="category" 
-                                value={category} onChange={(e) => setCategory(e.target.value)} fullWidth > 
+                                value={category} onChange={(e) => {setCategory(e.target.value); setEmptyFieldAlert(false) }} fullWidth > 
 
                                 {incomeCategoryList.map((item, index)=>(
                                     <MenuItem key={index} value={item}>{item}</MenuItem>
@@ -96,37 +125,42 @@ export const TransactionModal = ({openModal, setOpenModal, modalType, openSideba
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="body1" component="label" htmlFor="amount">Amount (BDT)</Typography>
                             <TextField type="number" id="amount" name="amount" 
-                                        value={amount} onChange={(e) => setAmount(e.target.value)} 
+                                        value={amount} onChange={(e) => {setAmount(e.target.value); setEmptyFieldAlert(false) }} 
                                         fullWidth/>
                         </div>
                     </div>
                 </div>
 
                 <div style={{ marginBottom: '1rem' , marginTop: '1rem' }}>
-                    <Typography variant="body1" component="label" htmlFor="date-time">Date</Typography>
-                    <DatePicker onChange={(date) => setDate(date.toISOString())}
-                        dateFormat="dd/MM/yyyy" selected={date} />
+                    <Typography variant="body1" component="label" htmlFor="date-time">Date</Typography><br/>
+                    <DatePicker showIcon onChange={(date) => { setDate(date.toISOString()); setEmptyFieldAlert(false) }}
+                        dateFormat="dd/MM/yyyy" selected={date} fullWidth/>
                 </div>
 
             
             
                 <div style={{ marginBottom: '1rem' }}>
                     <Typography variant="body1" component="label" htmlFor="notes">Notes</Typography>
-                    <TextField id="notes" name="notes" multiline rows={4} value={notes} onChange={(e) => setNotes(e.target.value)} fullWidth />
+                    <TextField id="notes" name="notes" multiline rows={4} value={notes} onChange={(e) => { setNotes(e.target.value); setEmptyFieldAlert(false)}} fullWidth />
                 </div>
             </form>
 
             <div style={{width: '100%', textAlign: 'right'}}>
-                <Button variant='outlined' styles={{marginRight: '0.5rem'}}>Cancel</Button>
-                <Button variant='contained' >Save</Button>
+                <Button variant='outlined' style={{marginRight: '0.5rem'}} onClick={onCancel}>Cancel</Button>
+                <Button variant='contained' onClick={onSave}>Save</Button>
             </div>
-            
+            {emptyFieldAlert && (
+                <Stack>
+                    <Alert severity='warning'>{alertMessage}</Alert>
+                </Stack>
+            )}
         </Box>)
     }
 
   return (
-    <Modal open={openModal} onClose={()=>setOpenModal(false)}>
+    <Modal open={openModal} onClose={()=>{ setOpenModal(false); onCancel(); }}>
         {IncomeModalBody()}
+        
     </Modal>
   )
 }

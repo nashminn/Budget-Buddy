@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Layout } from '../../components/Layout'
-import { Box, Fab, List, ListItem, Typography } from '@mui/material'
+import { Box, Fab, List, ListItem, Snackbar, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { AccountModal } from './AccountModal'
 import { AccountCard } from './AccountCard'
@@ -12,6 +12,15 @@ export const Accounts = ( {openSidebar} ) => {
   const location = useLocation()
   const [accounts, setAccounts] = useState( getAccountList() )
   const [showForm, setShowForm] = useState(false)
+  const [snackOpen, setSnackOpen] = useState(false)
+  const [showSnack, setShowSnack] = useState(false)
+
+  useEffect(()=>{
+    if(showSnack) {
+      setSnackOpen(true)
+      setShowSnack(false)
+    }
+  }, [showSnack])
 
   useEffect(()=>{
     if(location.state !== null) {
@@ -23,8 +32,25 @@ export const Accounts = ( {openSidebar} ) => {
 
   const addAccount = (accountToAdd) => {
     const newAccounts = [accountToAdd, ...accounts]
-    localStorage.setItem('accounts', JSON.stringify(newAccounts))
-    setAccounts(newAccounts)
+    const found = accounts.filter((x) => {
+      return x.tag === accountToAdd.tag
+    })
+    
+    if(found.length > 0) {
+      return {
+        success: false,
+        text: "Tag must be unique"
+      }
+    } else {
+      localStorage.setItem('accounts', JSON.stringify(newAccounts))
+      setAccounts(newAccounts)
+
+      setShowSnack(true)
+      return {
+        success: true,
+        text: "Account added"
+      }
+    }
   }
 
   const deleteAccount = (accountToDeleteId) => {
@@ -74,6 +100,17 @@ export const Accounts = ( {openSidebar} ) => {
       <Fab style={{ position: 'fixed', bottom: 20, right: 20 }} onClick={()=>setShowForm(true)} > 
         <AddIcon />
       </Fab>
+
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={snackOpen}
+        onClose={()=>{
+          setSnackOpen(false)
+        }}
+        autoHideDuration={3000}
+        message="Account added successfully"
+        key='key'
+      />
     </Layout>
   )
 }

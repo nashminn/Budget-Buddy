@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout } from '../../components/Layout'
 import { Box, Fab, Grid } from '@mui/material'
 import { Add, Remove,  } from '@mui/icons-material'
@@ -8,6 +8,9 @@ import { TransactionCard } from './TransactionCard'
 export const Transactions = ( {openSidebar} ) => {
   const [openModal, setOpenModal] = useState(false)
   const [modalType, setModalType] = useState(1)
+  const [resetCounter, setResetCounter] = useState(0)
+
+  useEffect(()=>{}, [resetCounter])
 
   return (
     <Layout title="Transactions" openSidebar={openSidebar}>
@@ -20,7 +23,7 @@ export const Transactions = ( {openSidebar} ) => {
         </Grid>
       </Grid>
 
-      <TransactionModal openModal={openModal} setOpenModal={setOpenModal} modalType={modalType} openSidebar={openSidebar}/>
+      <TransactionModal openModal={openModal} setOpenModal={setOpenModal} modalType={modalType} openSidebar={openSidebar} resetCounter={resetCounter} setResetCounter={setResetCounter}/>
 
       <Fab style={{ position: 'fixed', bottom: 100, right: 20, backgroundColor: '	#90EE90' }}
                   onClick={()=>{setOpenModal(true); setModalType(1)}} ><Add /></Fab>
