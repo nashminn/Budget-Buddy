@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Layout } from '../../components/Layout'
-import { Box, Fab, List, ListItem, Snackbar, Typography } from '@mui/material'
+import { Box, Fab, Grid, List, ListItem, Snackbar, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { AccountModal } from './AccountModal'
 import { AccountCard } from './AccountCard'
@@ -63,7 +63,10 @@ export const Accounts = ( {openSidebar} ) => {
   return (
     <Layout title="Accounts" openSidebar={openSidebar}>
       
-      <Box sx={{marginLeft: 20, marginRight: 20}}>
+      <Box sx={{ 
+        marginLeft: { xs: 2, sm: 3, md: 4, lg: 5 }, 
+        marginRight: { xs: 2, sm: 3, md: 4, lg: 5 } 
+      }} >
 
       <Box sx={{marginTop: 10}}>
         <Typography>
@@ -71,25 +74,27 @@ export const Accounts = ( {openSidebar} ) => {
         </Typography>
       </Box>
 
-      {accounts.length !== 0 ? (
-          <List>
-            {accounts.map((acc, index) => (
-              <ListItem key={index}> 
-                <AccountCard account={acc} resetCounter={resetCounter} setResetCounter={setResetCounter}/> 
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            width="100%"
-            height="100vh"
-          >
-            <div>There are no accounts to show</div>
-          </Box>
-        )}
+      <Grid container spacing={2}>
+          {accounts.length !== 0 ? (
+            accounts.map((acc, index) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                <AccountCard account={acc} resetCounter={resetCounter} setResetCounter={setResetCounter} />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                width="100%"
+                height="60vh"
+              >
+                <Typography variant="body1">There are no accounts to show</Typography>
+              </Box>
+            </Grid>
+          )}
+        </Grid>
         
       </Box>
 

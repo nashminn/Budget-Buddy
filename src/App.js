@@ -9,7 +9,7 @@ import { Accounts } from './pages/Accounts/Accounts';
 import { Budgets } from './pages/Budgets';
 import { Transactions } from './pages/Transactions/Transactions';
 import { Debts } from './pages/Debts';
-import { Calendar } from './pages/Calendar';
+import { CalendarPage } from './pages/CalendarPage';
 
 function App() {
   
@@ -26,7 +26,7 @@ function App() {
           <Route path='/accounts' element={ <Accounts openSidebar={true}/> }/>
           <Route path='/budgets' element={ <Budgets openSidebar={true}/> }/>
           <Route path='/debts' element={ <Debts openSidebar={true}/> }/>
-          <Route path='/calendar' element={ <Calendar openSidebar={true}/> }/>
+          <Route path='/calendar' element={ <CalendarPage openSidebar={true}/> }/>
          </Routes>
 
     </div>

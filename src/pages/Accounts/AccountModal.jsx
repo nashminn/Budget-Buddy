@@ -50,21 +50,21 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
   return (
     
         <Modal open={showForm} onClose={() => { 
-            // console.log("ON HIDE TRIGGERED"); 
             setShowForm(false) 
           }} >
 
         <Box sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: 400,
-                  bgcolor: 'background.paper',
-                  border: '2px solid #B2BEB5',
-                  boxShadow: 24,
-                  p: 4,
-                }}>
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '90%', // Adjust width based on screen size
+              maxWidth: 'sm', // Responsive maximum width
+              bgcolor: 'background.paper',
+              border: '2px solid #B2BEB5',
+              boxShadow: 24,
+              p: { xs: 2, sm: 4 }, // Adjust padding based on screen size
+            }}>
 
 
           <Typography id="modal-modal-title" variant="h6" component="h2">

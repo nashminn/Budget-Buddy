@@ -86,92 +86,112 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
         }
 
         return (
-        <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 600,
-            bgcolor: 'background.paper',
-            border: '2px solid #B2BEB5',
-            boxShadow: 24,
-            p: 4,
-        }}>
-            
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-            {title}
-            </Typography>
-            
-            <form>
-                <div style={{ marginBottom: '1rem' , marginTop: '1rem' }}>
-                    <Typography variant="body1" component="label" htmlFor="account">Account</Typography>
-                    
-                    <TextField
-                    select
-                    id='account'
-                    name="account"
-                    value={accountTag}
-                    onChange={(e) => { setAccountTag(e.target.value); setEmptyFieldAlert(false)}}
-                    variant="outlined"
-                    fullWidth
-                    autoComplete="off"
-                    >
-
-                        {accountList.map((item, index) => (
-                        <MenuItem key={index} value={item.tag}> {item.name + ' (' + item.tag + ')'}  </MenuItem>
-                        ))}
-                        <MenuItem key="another" value={"Add another"} onClick={redirectToAddAnotherAccount}>Add another account</MenuItem>
-                    </TextField>
+            <Box sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '90%', // Adjust width based on screen size
+                maxWidth: 600, // Maximum width
+                bgcolor: 'background.paper',
+                border: '2px solid #B2BEB5',
+                boxShadow: 24,
+                p: 4,
+            }}>
                 
-                </div>
-            
-                <div style={{ marginBottom: '1rem', display: 'flex' }}>
-                    <div style={{ flex: 1, marginRight: '1rem' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <Typography variant="body1" component="label" htmlFor="Category">Category</Typography>
-                            <TextField select type="text" id="category" name="category" 
-                                value={category} onChange={(e) => {setCategory(e.target.value); setEmptyFieldAlert(false) }} fullWidth > 
-
-                                {categoryList.map((item, index)=>(
-                                    <MenuItem key={index} value={item}>{item}</MenuItem>
-                                ))}
-
-                            </TextField>
-                        </div>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                    {title}
+                </Typography>
+                
+                <form>
+                    <div style={{ marginBottom: '1rem' , marginTop: '1rem' }}>
+                        <Typography variant="body1" component="label" htmlFor="account">Account</Typography>
+                        
+                        <TextField
+                            select
+                            id='account'
+                            name="account"
+                            value={accountTag}
+                            onChange={(e) => { setAccountTag(e.target.value); setEmptyFieldAlert(false)}}
+                            variant="outlined"
+                            fullWidth
+                            autoComplete="off"
+                        >
+                            {accountList.map((item, index) => (
+                                <MenuItem key={index} value={item.tag}> {item.name + ' (' + item.tag + ')'}  </MenuItem>
+                            ))}
+                            <MenuItem key="another" value={"Add another"} onClick={redirectToAddAnotherAccount}>Add another account</MenuItem>
+                        </TextField>
+                    
                     </div>
-
-                    <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <Typography variant="body1" component="label" htmlFor="amount">Amount (BDT)</Typography>
-                            <TextField type="number" id="amount" name="amount" 
-                                        value={amount} onChange={(e) => {setAmount(e.target.value); setEmptyFieldAlert(false) }} 
-                                        fullWidth/>
-                        </div>
+                
+                    <div style={{ marginBottom: '1rem' }}>
+                        <Typography variant="body1" component="label" htmlFor="category">Category</Typography>
+                        <TextField 
+                            select 
+                            type="text" 
+                            id="category" 
+                            name="category" 
+                            value={category} 
+                            onChange={(e) => {setCategory(e.target.value); setEmptyFieldAlert(false) }} 
+                            fullWidth 
+                            variant="outlined"
+                        > 
+                            {categoryList.map((item, index)=>(
+                                <MenuItem key={index} value={item}>{item}</MenuItem>
+                            ))}
+                        </TextField>
                     </div>
-                </div>
-
-                <div style={{ marginBottom: '1rem' , marginTop: '1rem' }}>
-                    <Typography variant="body1" component="label" htmlFor="date-time">Date</Typography><br/>
-                    <DatePicker showIcon onChange={(date) => { setDate(date.toISOString()); setEmptyFieldAlert(false) }}
-                        dateFormat="dd/MM/yyyy" selected={date} fullWidth/>
-                </div>
-
             
+                    <div style={{ marginBottom: '1rem' }}>
+                        <Typography variant="body1" component="label" htmlFor="amount">Amount (BDT)</Typography>
+                        <TextField 
+                            type="number" 
+                            id="amount" 
+                            name="amount" 
+                            value={amount} 
+                            onChange={(e) => {setAmount(e.target.value); setEmptyFieldAlert(false) }} 
+                            fullWidth 
+                            variant="outlined"
+                        />
+                    </div>
             
-                <div style={{ marginBottom: '1rem' }}>
-                    <Typography variant="body1" component="label" htmlFor="notes">Notes</Typography>
-                    <TextField id="notes" name="notes" multiline rows={4} value={notes} onChange={(e) => { setNotes(e.target.value); setEmptyFieldAlert(false)}} fullWidth />
+                    <div style={{ marginBottom: '1rem' , marginTop: '1rem' }}>
+                        <Typography variant="body1" component="label" htmlFor="date-time">Date</Typography><br/>
+                        <DatePicker 
+                            showIcon 
+                            onChange={(date) => { setDate(date.toISOString()); setEmptyFieldAlert(false) }}
+                            dateFormat="dd/MM/yyyy" 
+                            selected={date} 
+                            fullWidth
+                        />
+                    </div>
+            
+                
+                    <div style={{ marginBottom: '1rem' }}>
+                        <Typography variant="body1" component="label" htmlFor="notes">Notes</Typography>
+                        <TextField 
+                            id="notes" 
+                            name="notes" 
+                            multiline 
+                            rows={4} 
+                            value={notes} 
+                            onChange={(e) => { setNotes(e.target.value); setEmptyFieldAlert(false)}} 
+                            fullWidth 
+                            variant="outlined"
+                        />
+                    </div>
+                </form>
+            
+                <div style={{width: '100%', textAlign: 'right'}}>
+                    <Button variant='outlined' style={{marginRight: '0.5rem'}} onClick={onCancel}>Cancel</Button>
+                    <Button variant='contained' onClick={onSave}>Save</Button>
                 </div>
-            </form>
-
-            <div style={{width: '100%', textAlign: 'right'}}>
-                <Button variant='outlined' style={{marginRight: '0.5rem'}} onClick={onCancel}>Cancel</Button>
-                <Button variant='contained' onClick={onSave}>Save</Button>
-            </div>
-            {emptyFieldAlert && (
-                <Alert severity='warning' style={{marginTop: 5}}>{alertMessage}</Alert>
-            )}
-        </Box>)
+                {emptyFieldAlert && (
+                    <Alert severity='warning' style={{marginTop: 5}}>{alertMessage}</Alert>
+                )}
+            </Box>
+            )
     }
 
 
