@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Layout } from '../../components/Layout'
-import { Box, Fab, Grid, useMediaQuery, useTheme } from '@mui/material'
-import { Add, Remove } from '@mui/icons-material'
+import { Box, Fab, Grid, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Add, ChevronLeft, ChevronRight, Remove } from '@mui/icons-material'
 import { TransactionModal } from './TransactionModal'
 import { TransactionCard } from './TransactionCard'
-import { getTransactionList } from '../../API/services'
+import { getTransactionList, getTransactionListByMonth } from '../../API/services'
+import { FilterTransaction } from './FilterTransaction'
+import { nextMonth, previousMonth } from '../../API/utility'
 
 export const Transactions = ({ openSidebar }) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
+  const [filter, setFilter] = useState({})
 
+  const [date, setDate] = useState(new Date())
   const [openModal, setOpenModal] = useState(false)
   const [modalType, setModalType] = useState(1)
   const [resetCounter, setResetCounter] = useState(0)
@@ -19,6 +23,47 @@ export const Transactions = ({ openSidebar }) => {
     setTransactionList(getTransactionList())
   }, [resetCounter])
 
+  useEffect(() => {
+    setTransactionList(getTransactionListByMonth(date))
+  }, [date])
+
+  useEffect(()=>{
+    if(Object.keys(filter).length > 0) {
+      console.log(filter)
+      const all = getTransactionListByMonth(date)
+      const filtered = all.filter((x)=>{
+        return x.category.includes(filter.category)
+      })
+      setTransactionList(filtered)
+    } else {
+      setTransactionList(getTransactionListByMonth(date))
+    }
+  }, [filter])
+
+  const monthTop = ()=> {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0 8px' }}>
+  <IconButton 
+    sx={{ width: '40px', height: '40px' }} 
+    onClick={() => { setDate(previousMonth(date)); }}
+  >
+    <ChevronLeft />
+  </IconButton>
+  <span style={{ textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+    {date.toLocaleString('default', { month: 'long' })} {date.getFullYear()}
+  </span>
+  <IconButton 
+    sx={{ width: '40px', height: '40px' }} 
+    onClick={() => { setDate(nextMonth(date)); }}
+  >
+    <ChevronRight />
+  </IconButton>
+</div>
+
+
+    )
+  }
+
   return (
     <Layout title="Transactions" openSidebar={openSidebar}>
       <Grid container spacing={4}>
@@ -26,10 +71,15 @@ export const Transactions = ({ openSidebar }) => {
           <>
             <Grid item xs={12} md={4}>
               <Box padding={3} margin={3}>
-              "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."
+                <>
+                  <FilterTransaction setFilter={setFilter}/>
+                </>
               </Box>
             </Grid>
             <Grid item xs={12} md={8}>
+              <Box width="100%">
+                {monthTop()}
+              </Box>
               <Box padding={3}>
                 {transactionList.map((t, index) => (
                   <TransactionCard transaction={t} key={t.id} resetCounter={resetCounter} setResetCounter={setResetCounter} />
@@ -40,10 +90,15 @@ export const Transactions = ({ openSidebar }) => {
         ) : (
           <>
             <Grid item xs={12}>
-              "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."
+              <FilterTransaction setFilter={setFilter} />  
             </Grid>
             <Grid item xs={12}>
-              {transactionList.map((t, index) => (
+            {monthTop()}
+            </Grid>
+            
+            <Grid item xs={12}>
+              {transactionList.length === 0?<Typography>No transactions for this month</Typography>:
+              transactionList.map((t, index) => (
                 <TransactionCard transaction={t} key={t.id} resetCounter={resetCounter} setResetCounter={setResetCounter} />
               ))}
             </Grid>

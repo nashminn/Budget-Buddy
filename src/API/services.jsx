@@ -12,11 +12,11 @@ export const getTransactionList = () => {
     return transactionList;
 }
 
-export const getTransactionListByMonth = (currentMonth) => {
+export const getTransactionListByMonth = (date) => {
     const all = getTransactionList()
     const filteredTransactions = all.filter(transaction => {
         const transactionDate = new Date(transaction.date);
-        return transactionDate.getMonth() === currentMonth;
+        return transactionDate.getMonth() === date.getMonth() && transactionDate.getFullYear() === date.getFullYear();
     });
 
     return filteredTransactions;

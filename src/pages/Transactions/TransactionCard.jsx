@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteDialog from '../../components/DeleteDialog';
 import { deleteTransaction } from '../../API/services';
+import { formatDate } from '../../API/utility';
 
 // category, wallet, amount, timestamp, type
 
@@ -47,11 +48,11 @@ export const TransactionCard = ({transaction, resetCounter, setResetCounter}) =>
                 <Grid item style={{ display: 'flex', alignItems: 'center' }}>
                     <Grid item style={{textAlign: 'right'}}>
                         <Typography >
-                            {amount}
+                           BDT {amount}
                         </Typography>
 
                         <Typography>
-                            {isToday(date)?"Today":date}
+                            {isToday(date)?"Today": formatDate(new Date(date))}
                         </Typography>
                     </Grid>
 
@@ -67,10 +68,9 @@ export const TransactionCard = ({transaction, resetCounter, setResetCounter}) =>
                         'aria-labelledby': 'basic-button',
                         }}
                     >
-                        <MenuItem onClick={handleClose}>View details</MenuItem>
-                        <MenuItem onClick={handleClose}>Duplicate transaction</MenuItem>
-                        <MenuItem onClick={handleClose}>Edit transaction</MenuItem>
-                        <MenuItem ><DeleteDialog deleteHandle={deleteTransaction} id={transaction.id} resetCounter={resetCounter}
+                        {/* <MenuItem onClick={handleClose}>View details</MenuItem> */}
+                        <MenuItem >
+                    <DeleteDialog deleteHandle={deleteTransaction} id={transaction.id} resetCounter={resetCounter}
                         setResetCounter={setResetCounter}
                         promptTitle={"Delete transaction?"} 
                         prompt={"The account will be restored without this transaction. Are you sure you want to delete this transaction?"}>Delete transaction</DeleteDialog></MenuItem>

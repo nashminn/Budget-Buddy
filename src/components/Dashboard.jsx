@@ -63,7 +63,6 @@ export const Dashboard = ({ title, open, setOpen }) => {
     ['Transactions', <ReceiptIcon />, '/transactions'],
     ['Accounts', <AccountBalanceIcon />, '/accounts'],
     ['Budgets', <PieChartIcon />, '/budgets'],
-    ['Debts', <TimerOutlinedIcon />, '/debts'],
     ['Calendar', <CalendarTodayIcon />, '/calendar'] 
   ];
 
@@ -110,6 +109,7 @@ export const Dashboard = ({ title, open, setOpen }) => {
         onClose={handleDrawerClose}
       >
         <DrawerHeader>
+          <Typography>Budget Buddy</Typography>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
@@ -129,6 +129,7 @@ export const Dashboard = ({ title, open, setOpen }) => {
             ))
           }
         </List>
+        <Divider />
       </Drawer>
     </Box>
   );
