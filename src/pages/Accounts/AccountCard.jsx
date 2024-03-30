@@ -9,7 +9,7 @@ export const AccountCard = ({account, resetCounter, setResetCounter}) => {
     
   return (
     <Card variant="outlined" sx={{ width: '100%', marginBottom: 2 , position: 'relative', paddingRight: '40px'}} >
-        <CardContent>
+        <CardContent sx={{textAlign: 'left'}}>
             <Typography variant="h5" component="h2">
                 {account.name}
             </Typography>

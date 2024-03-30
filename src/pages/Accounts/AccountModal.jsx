@@ -23,7 +23,7 @@ export const AccountModal = ( { showForm, setShowForm, addAccount } ) => {
     if (tag.trim() === '' || name.trim() === '') {
       setAlertMessage("Account name and tag cannot be empty!")
       setEmptyFieldAlert(true)
-      return; // Exit the function without submitting the form
+      return; // no submit form
     }
 
     const accountToAdd = {

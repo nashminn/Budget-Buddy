@@ -12,6 +12,16 @@ export const getTransactionList = () => {
     return transactionList;
 }
 
+export const getTransactionListByMonth = (currentMonth) => {
+    const all = getTransactionList()
+    const filteredTransactions = all.filter(transaction => {
+        const transactionDate = new Date(transaction.date);
+        return transactionDate.getMonth() === currentMonth;
+    });
+
+    return filteredTransactions;
+}
+
 export const addNewAccount = (accountToAdd) => {
     const accList = getAccountList()
     const newList = [accountToAdd, ...accList]

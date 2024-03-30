@@ -63,40 +63,32 @@ export const Accounts = ( {openSidebar} ) => {
   return (
     <Layout title="Accounts" openSidebar={openSidebar}>
       
-      <Box sx={{ 
-        marginLeft: { xs: 2, sm: 3, md: 4, lg: 5 }, 
-        marginRight: { xs: 2, sm: 3, md: 4, lg: 5 } 
-      }} >
+      <Box sx={{ marginX: { xs: 2, sm: 3, md: 4, lg: 5 } }}>
+        <Box sx={{ marginTop: 10 }}>
+          <Typography>
+            {accounts.length !== 0 ? 'Total amount : ' + accounts.reduce((acc, curr) => acc + Number(curr.balance), 0) + ' BDT' : ''}
+          </Typography>
+        </Box>
 
-      <Box sx={{marginTop: 10}}>
-        <Typography>
-          {accounts.length !== 0 ? "Total amount : " + accounts.reduce((acc, curr) => acc + Number(curr.balance), 0) + ' BDT' : '' }
-        </Typography>
-      </Box>
-
-      <Grid container spacing={2}>
+        <Grid container spacing={4} justifyContent="center">
           {accounts.length !== 0 ? (
             accounts.map((acc, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                <AccountCard account={acc} resetCounter={resetCounter} setResetCounter={setResetCounter} />
+              <Grid item xs={9} sm={10} md={10} lg={10} key={index}>
+                <Box display="flex" justifyContent="center">
+                  <AccountCard account={acc} resetCounter={resetCounter} setResetCounter={setResetCounter} />
+                </Box>
               </Grid>
             ))
           ) : (
             <Grid item xs={12}>
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                width="100%"
-                height="60vh"
-              >
+              <Box display="flex" justifyContent="center" alignItems="center" height="60vh">
                 <Typography variant="body1">There are no accounts to show</Typography>
               </Box>
             </Grid>
           )}
         </Grid>
-        
       </Box>
+
 
       <AccountModal showForm={showForm} setShowForm={setShowForm} addAccount={addAccount} />
 

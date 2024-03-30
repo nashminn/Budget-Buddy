@@ -9,7 +9,7 @@ import { Accounts } from './pages/Accounts/Accounts';
 import { Budgets } from './pages/Budgets';
 import { Transactions } from './pages/Transactions/Transactions';
 import { Debts } from './pages/Debts';
-import { CalendarPage } from './pages/CalendarPage';
+import { CalendarPage } from './pages/CalendarPage/CalendarPage';
 
 function App() {
   

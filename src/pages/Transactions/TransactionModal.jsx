@@ -76,7 +76,7 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
                 tag: accountTag,
                 category: category,
                 amount: amount,
-                date: date.toISOString(),
+                date: date,
                 notes: notes
             }
             addNewTransaction(newTransaction);
@@ -91,8 +91,8 @@ export const TransactionModal = ({openModal, setOpenModal, modalType,
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                width: '90%', // Adjust width based on screen size
-                maxWidth: 600, // Maximum width
+                width: '90%', 
+                maxWidth: 600, 
                 bgcolor: 'background.paper',
                 border: '2px solid #B2BEB5',
                 boxShadow: 24,

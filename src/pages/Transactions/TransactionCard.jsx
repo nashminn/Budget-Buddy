@@ -13,6 +13,13 @@ export const TransactionCard = ({transaction, resetCounter, setResetCounter}) =>
     const [date, setDate] = useState(transaction===undefined?'':transaction.date)
     const [color, setColor] = useState(transaction===undefined?'#FF5C5C':transaction.type===1?"#90EE90":"#FF5C5C")
     
+    const isToday = (_date)=>{
+        const today = new Date()
+        const date = new Date(_date)
+        return date.getFullYear() === today.getFullYear() &&
+           date.getMonth() === today.getMonth() &&
+           date.getDate() === today.getDate();
+    }
     
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -44,7 +51,7 @@ export const TransactionCard = ({transaction, resetCounter, setResetCounter}) =>
                         </Typography>
 
                         <Typography>
-                            {date}
+                            {isToday(date)?"Today":date}
                         </Typography>
                     </Grid>
 

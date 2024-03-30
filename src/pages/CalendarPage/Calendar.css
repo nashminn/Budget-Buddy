@@ -1,0 +1,94 @@
+.custom-calendar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .custom-calendar {
+    display: inline-block; /* Ensure the calendar is treated as an inline-block element */
+    text-align: center; /* Center the content within the calendar */
+    width: 100%; /* Set initial width to 100% */
+  }
+  
+  .custom-calendar .react-calendar {
+    width: 100%; /* Set the calendar width to 100% */
+  }
+  
+  .custom-calendar .react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Adjust spacing between navigation and calendar */
+  }
+  
+  .custom-calendar .react-calendar__navigation button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .react-calendar.custom-calendar {
+    border: none; /* Remove border for elements with both classes */
+  }
+  
+  .custom-calendar .react-calendar__navigation__prev2-button,
+  .custom-calendar .react-calendar__navigation__next2-button {
+    display: none; /* Hide previous and next two buttons */
+  }
+  
+  .custom-calendar .react-calendar__tile {
+    height: 80px; /* Set desired height */
+  }
+
+  .custom-calendar .react-calendar__month-view__days {
+    border: 1px solid #bab7b7; /* Set desired border style and color */
+  }
+
+  .react-calendar__navigation__next-button,
+  .react-calendar__navigation__prev-button {
+    font-size: 1.5em; /* Set desired font size */
+    width: 200px; /* Set desired width */
+    height: 40px; /* Set desired height */
+  }
+  
+
+  .custom-calendar .weekend {
+    background-color: #f3d7d7; /* Custom background color for weekend tiles */
+    color: black; /* Change text color for weekend tiles */
+  }
+  
+  .custom-calendar .react-calendar__month-view__days__day--weekend {
+    color: black; /* Change text color for Sundays */
+  }
+
+  /* Disable pointer events on the button */
+  .react-calendar__navigation__label {
+    pointer-events: none; 
+  }
+
+  .custom-calendar .react-calendar__tile--now {
+    background-color: #f5f8c9; /* Set desired background color for the current day */
+  }
+
+  .react-calendar__viewContainer {
+    border: 1px solid #ccc; /* Set border for react-calendar__viewContainer */
+    margin-bottom: 10px; /* Add space between react-calendar__viewContainer and other elements */
+  }
+  
+  .react-calendar__navigation {
+    border: 1px solid #ccc; /* Set border for react-calendar__navigation */
+    margin-top: 10px; /* Add space between react-calendar__navigation and other elements */
+  }
+  
+  
+  /* Adjust width on large screens */
+  @media screen and (min-width: 768px) {
+    .custom-calendar {
+      width: 70%; /* Limit the width to 70% on larger screens */
+    }
+  }
+
+  /* @media screen and (max-width: ) {
+    
+  } */
+  

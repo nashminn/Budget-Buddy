@@ -1,4 +1,3 @@
-// Dashboard.js
 import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -17,14 +16,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
+import { useNavigate } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import PieChartIcon from '@mui/icons-material/PieChart';
-import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import { useNavigate } from 'react-router-dom';
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
+import { useMediaQuery } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -57,15 +56,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export const Dashboard = ({ title, open, setOpen }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const DashboardList = [ 
-                          ['Overview', <DashboardIcon />, '/'], 
-                          ['Transactions', <ReceiptIcon />, '/transactions'],
-                          ['Accounts', <AccountBalanceIcon />, '/accounts'], 
-                          ['Budgets', <PieChartIcon />, '/budgets'], 
-                          ['Debts', <TimerOutlinedIcon />, '/debts'], 
-                          ['Calendar', <CalendarTodayIcon />, '/calendar']
-                        ]
+  const DashboardList = [
+    ['Overview', <DashboardIcon />, '/'], 
+    ['Transactions', <ReceiptIcon />, '/transactions'],
+    ['Accounts', <AccountBalanceIcon />, '/accounts'],
+    ['Budgets', <PieChartIcon />, '/budgets'],
+    ['Debts', <TimerOutlinedIcon />, '/debts'],
+    ['Calendar', <CalendarTodayIcon />, '/calendar'] 
+  ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -98,14 +98,16 @@ export const Dashboard = ({ title, open, setOpen }) => {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
+          ...(isSmallScreen && { width: '100%' }), // overlay on small screens
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
           },
         }}
-        variant="persistent"
+        variant={isSmallScreen ? 'temporary' : 'persistent'}
         anchor="left"
         open={open}
+        onClose={handleDrawerClose}
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -116,34 +118,17 @@ export const Dashboard = ({ title, open, setOpen }) => {
         <List>
           {
             DashboardList.map((menuItem, index) => (
-              
-                <ListItem key={index} disablePadding>
-                
-                  <ListItemButton onClick={()=>navigate(menuItem[2])}>
-                    <ListItemIcon>
-                      { menuItem[1] }
-                    </ListItemIcon>
-                    <ListItemText primary={menuItem[0]} />
-                  </ListItemButton>
-                
-                </ListItem>
-
+              <ListItem key={index} disablePadding>
+                <ListItemButton onClick={() => navigate(menuItem[2])}>
+                  <ListItemIcon>
+                    {menuItem[1]}
+                  </ListItemIcon>
+                  <ListItemText primary={menuItem[0]} />
+                </ListItemButton>
+              </ListItem>
             ))
           }
         </List>
-        {/* <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
       </Drawer>
     </Box>
   );
