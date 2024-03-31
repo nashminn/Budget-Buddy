@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Layout } from '../../components/Layout'
 import { Box, ButtonBase, Card, CardContent, CardHeader, Grid, Typography } from '@mui/material'
-import { getAccountList } from '../../API/services'
+import { getAccountList, getTransactionListByMonth } from '../../API/services'
 import { HomeAccountCard } from './HomeAccountCard'
 import { HomeTransactionCard } from './HomeTransactionCard'
 import { useNavigate } from 'react-router-dom'
 import { PieChartComponent } from './PieChartComponent'
+import { previousMonth } from '../../API/utility'
 
 export const Home = () => {
     const navigate = useNavigate()
@@ -47,23 +48,54 @@ export const Home = () => {
                 
                 <Grid item xs={12} sm={4}>
                     <Box sx={{ p: 2 }}>
-                        <ButtonBase onClick={()=>navigate('/transactions', {
-                            state: {
-                                currentMonth: new Date().getMonth()
-                            }
-                        })}>
+                        <ButtonBase onClick={()=>navigate('/transactions')}>
                             <Card>
+                                <CardHeader title={"This month's transaction"}/>
                                 <CardContent>
-                                    <PieChartComponent date={new Date()}/>
+                                    
+                                    <Typography>Income: {getTransactionListByMonth(new Date()).reduce((acc, curr) => {
+                                        if(curr.type === 1){
+                                            acc = Number(acc) + Number(curr.amount)
+                                        }
+                                        return acc
+                                    }, 0)}</Typography>
+                                    <Typography>Expenses: {getTransactionListByMonth(( new Date() )).reduce((acc, curr) => {
+                                        if(curr.type === -1){
+                                            acc = Number(acc) + Number(curr.amount)
+                                        }
+                                        return acc
+                                    }, 0)}</Typography>
                                 </CardContent>
                             </Card>
                         </ButtonBase>
                     </Box>
                 </Grid>
+
                 <Grid item xs={12} sm={4}>
-                    <Box sx={{ bgcolor: 'tertiary.main', p: 2 }}>
-                    <Typography variant="h6" color="red">Box 3</Typography>
-                    {/* Add content for Box 3 */}
+                <Box sx={{ p: 2 }}>
+                        <ButtonBase onClick={()=>navigate('/transactions', {
+                            state: {
+                                prevMonth: true
+                            }
+                        })}>
+                            <Card>
+                                <CardHeader title={"Last month's transaction"}/>
+                                <CardContent>
+                                    <Typography>Income: {getTransactionListByMonth(previousMonth( new Date() )).reduce((acc, curr) => {
+                                        if(curr.type === 1){
+                                            acc = Number(acc) + Number(curr.amount)
+                                        }
+                                        return acc
+                                    }, 0)}</Typography>
+                                    <Typography>Expenses: {getTransactionListByMonth(previousMonth( new Date() )).reduce((acc, curr) => {
+                                        if(curr.type === -1){
+                                            acc = Number(acc) + Number(curr.amount)
+                                        }
+                                        return acc
+                                    }, 0)}</Typography>
+                                </CardContent>
+                            </Card>
+                        </ButtonBase>
                     </Box>
                 </Grid>
                 </Grid>

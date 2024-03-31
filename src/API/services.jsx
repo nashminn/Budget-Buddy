@@ -12,7 +12,8 @@ export const getTransactionList = () => {
     return transactionList;
 }
 
-export const getTransactionListByMonth = (date) => {
+export const getTransactionListByMonth = (_date) => {
+    const date = new Date(_date)
     const all = getTransactionList()
     const filteredTransactions = all.filter(transaction => {
         const transactionDate = new Date(transaction.date);
@@ -118,4 +119,24 @@ export const deleteTransaction = (id) => {
 
     updateAccount(updated)
     localStorage.setItem('transactions', JSON.stringify(withoutId))
+}
+
+export const addBudget = (budget)=>{
+    const existing = localStorage.getItem('budgets')===null?[]: JSON.parse( localStorage.getItem('budgets') )
+    const newB = [budget, ...existing]
+    localStorage.setItem('budgets', JSON.stringify(newB))
+}
+
+export const getBudget = () => {
+    const budgetList = localStorage.getItem('budgets')===null?[]: JSON.parse( localStorage.getItem('budgets') )
+
+    return budgetList;
+}
+
+export const deleteBudget = (id) => {
+    const budgets = getBudget()
+    const filtered = budgets.filter((x) => {
+        return x.id !== id
+    })
+    localStorage.setItem("budgets", JSON.stringify(filtered))
 }

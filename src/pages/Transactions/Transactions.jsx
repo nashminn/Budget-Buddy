@@ -7,8 +7,10 @@ import { TransactionCard } from './TransactionCard'
 import { getTransactionList, getTransactionListByMonth } from '../../API/services'
 import { FilterTransaction } from './FilterTransaction'
 import { nextMonth, previousMonth } from '../../API/utility'
+import { useLocation } from 'react-router-dom'
 
 export const Transactions = ({ openSidebar }) => {
+  const location = useLocation()
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
   const [filter, setFilter] = useState({})
@@ -26,6 +28,13 @@ export const Transactions = ({ openSidebar }) => {
   useEffect(() => {
     setTransactionList(getTransactionListByMonth(date))
   }, [date])
+
+  useEffect(()=>{
+    if(location.state !== null) {
+      setDate(previousMonth(new Date()))
+      setTransactionList( getTransactionListByMonth( previousMonth(new Date()) ) )
+    }
+  }, [])
 
   useEffect(()=>{
     if(Object.keys(filter).length > 0) {

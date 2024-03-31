@@ -9,9 +9,10 @@ import { Accounts } from './pages/Accounts/Accounts';
 import { Budgets } from './pages/Budget/Budgets';
 import { Transactions } from './pages/Transactions/Transactions';
 import { CalendarPage } from './pages/CalendarPage/CalendarPage';
+import { populateMockData } from './data/mockData';
 
 function App() {
-  
+  populateMockData()
   return (
     <div className="App" >
 

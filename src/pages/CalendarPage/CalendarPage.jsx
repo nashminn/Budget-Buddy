@@ -25,7 +25,8 @@ export const CalendarPage = ( {openSidebar} ) => {
   const [resetCounter, setResetCounter] = useState(0)
 
   useEffect(()=> {
-    const transList = getTransactionListByMonth(currentMonth)
+    const transList = getTransactionListByMonth(new Date())
+    console.log(transList)
     setCurrMonthTransactions(transList)
   }, [])
 
