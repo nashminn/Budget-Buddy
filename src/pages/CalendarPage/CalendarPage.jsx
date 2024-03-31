@@ -32,7 +32,7 @@ export const CalendarPage = ( {openSidebar} ) => {
 
   useEffect(()=>{
     setDayFlag(false)
-    setCurrMonthTransactions(getTransactionListByMonth(currentMonth))
+    setCurrMonthTransactions(getTransactionListByMonth(new Date()))
   }, [resetCounter])
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export const CalendarPage = ( {openSidebar} ) => {
   const tileClassName = ({ date }) => {
     // Check if the date is Friday or Saturday
     if (date.getDay() === 5 || date.getDay() === 6) {
-      return 'weekend'; // Apply 'weekend' class for Friday and Saturday
+      return 'weekend'; 
     }
     return null;
   }
@@ -86,11 +86,14 @@ export const CalendarPage = ( {openSidebar} ) => {
   }
 
   const handleDayClick = (date) => {
+    console.log(date)
+    console.log(currMonthTransactions)
     const filtered = currMonthTransactions.filter((t) => {
       const d = new Date(t.date)
+      console.log(isSameDay(date, d))
       return isSameDay(date, d)
     })
-
+    console.log(filtered)
     setDayFlag(true)
     setCurrDayTransactions(filtered)
   }
