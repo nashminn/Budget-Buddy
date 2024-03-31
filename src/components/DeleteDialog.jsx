@@ -22,6 +22,10 @@ export default function DeleteDialog({ deleteHandle, id, promptTitle, prompt, ..
   const handleDelete = ()=>{
     deleteHandle(id)
     handleClose()
+
+    if(props.handleClose !== undefined) {
+      props.handleClose()
+    }
     
     if(props.resetCounter !== undefined) {
       props.setResetCounter(props.resetCounter + 1)

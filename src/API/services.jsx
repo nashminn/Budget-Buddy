@@ -17,7 +17,7 @@ export const getTransactionListByMonth = (_date) => {
     const all = getTransactionList()
     const filteredTransactions = all.filter(transaction => {
         const transactionDate = new Date(transaction.date);
-        return transactionDate.getMonth() === date.getMonth() && transactionDate.getFullYear() === date.getFullYear();
+        return (transactionDate.getMonth() === date.getMonth() && transactionDate.getFullYear() === date.getFullYear());
     });
 
     return filteredTransactions;
@@ -102,6 +102,9 @@ export const deleteTransaction = (id) => {
         if(x.id === id) withId = x
         return x.id !== id
     })
+    
+    console.log(withoutId)
+    
 
     const acc = getAccountWithTag(withId.tag)
     if(withId.type === -1) {
@@ -112,6 +115,7 @@ export const deleteTransaction = (id) => {
         acc.balance = Number(acc.balance) - Number(withId.amount)
     }
     console.log(acc)
+    
     const updated = {
         updated: new Date(),
         ...acc

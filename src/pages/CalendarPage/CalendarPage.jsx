@@ -11,7 +11,7 @@ import { TransactionCard } from '../Transactions/TransactionCard';
 
 export const CalendarPage = ( {openSidebar} ) => {
   const [value, setValue] = useState(new Date());
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  
   const [dayFlag, setDayFlag] = useState(false)
 
   const [currMonthTransactions, setCurrMonthTransactions] = useState([])
@@ -31,8 +31,8 @@ export const CalendarPage = ( {openSidebar} ) => {
   }, [])
 
   useEffect(()=>{
+    setCurrMonthTransactions(getTransactionListByMonth(value))
     setDayFlag(false)
-    setCurrMonthTransactions(getTransactionListByMonth(new Date()))
   }, [resetCounter])
 
   useEffect(() => {
@@ -76,12 +76,11 @@ export const CalendarPage = ( {openSidebar} ) => {
   }
 
   const handleViewChange = ({ activeStartDate, view }) => {
-    const _currentMonth = activeStartDate.getMonth();
-    console.log(_currentMonth)
+    setValue(activeStartDate)
     setDayFlag(false)
-    setCurrentMonth(_currentMonth)
+    
     setCurrDayTransactions([])
-    setCurrMonthTransactions(getTransactionListByMonth(_currentMonth))
+    setCurrMonthTransactions(getTransactionListByMonth(activeStartDate))
     setResetCounter(resetCounter + 1)
   }
 

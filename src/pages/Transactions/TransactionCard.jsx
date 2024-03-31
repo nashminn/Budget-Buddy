@@ -71,7 +71,7 @@ export const TransactionCard = ({transaction, resetCounter, setResetCounter}) =>
                         {/* <MenuItem onClick={handleClose}>View details</MenuItem> */}
                         <MenuItem >
                     <DeleteDialog deleteHandle={deleteTransaction} id={transaction.id} resetCounter={resetCounter}
-                        setResetCounter={setResetCounter}
+                        setResetCounter={setResetCounter} handleClose={handleClose}
                         promptTitle={"Delete transaction?"} 
                         prompt={"The account will be restored without this transaction. Are you sure you want to delete this transaction?"}>Delete transaction</DeleteDialog></MenuItem>
                         
